@@ -1,0 +1,20 @@
+name: Markdown Linter
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-markdown:
+    name: Lint markdown files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Lint the code
+        uses: avto-dev/markdown-lint@v1
+        with:
+          args: "**/*.md"
+          config: .github/workflows/markdownlint.yaml
