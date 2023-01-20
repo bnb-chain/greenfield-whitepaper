@@ -1,12 +1,5 @@
 # Greenfield Whitepaper
 
-## Revision
-
-| Revision | Date       |
-|----------|------------|
-| 0.1      | 2022/12/04 |
-| 0.2      | 2023/01/15 |
-| 0.3      | 2023/01/19 |
 
 ## Table of Content
 
