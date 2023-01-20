@@ -24,7 +24,7 @@ NFTs implement arts and collectibles. But there are plenty of items that
 are not innovated well enough, such as credit, real-world asset (RWA)
 tokenizations, and the one we'd like to focus on in this paper:
 
-<div align="center"><strong>data.</strong></div>
+<div align="center"><strong><i>data.</i></strong></div>
 
 The value of a data asset is not self-evident when it is just held by
 one person. They become much more valuable when they are shared and
