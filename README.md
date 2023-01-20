@@ -9,6 +9,7 @@
 | 0.3      | 2023/01/19 |
 
 ## Table of Content
+
 - [Overview](./overview.md#overview)
 - Part 1 Design of the BNB Greenfield and the Decentralized Storage Economy
   - [1. Design Principles](./part1/ch1.md#1-design-principles)

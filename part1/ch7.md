@@ -50,8 +50,8 @@ will be used as the self-stake of validators and early days gas fees.
 
 ## 7.2 Framework
 
-<center><img src="../assets/figure7.1.jpg"></center>
-<center><i>Figure 7.1: Cross-chain Architecture</i></center>
+<div align="center"><img src="../assets/figure7.1.jpg"></div>
+<div align="center"><i>Figure 7.1: Cross-chain Architecture</i></div>
 
 The bottom layer is a cross-chain **Communication Layer**, which focuses
 on primitive communication package handling and verification. The middle

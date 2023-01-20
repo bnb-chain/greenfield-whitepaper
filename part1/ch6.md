@@ -164,8 +164,8 @@ or by an EOA.
 
 ## 6.6 Fees and Payments
 
-<center><img src="../assets/figure6.1.jpg"></center>
-<center><i>Figure 6.1: Payment Stream Flow</i></center>
+<div align="center"><img src="../assets/figure6.1.jpg"></div>
+<div align="center"><i>Figure 6.1: Payment Stream Flow</i></div>
 
 The storage fee will be charged on Greenfield in a steam payment style
 like
