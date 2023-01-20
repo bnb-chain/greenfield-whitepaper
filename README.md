@@ -11,7 +11,7 @@
 ## Table of Content
 
 - [Overview](./overview.md#overview)
-- Part 1 Design of the BNB Greenfield and the Decentralized Storage Economy
+- [Part 1 Design of the BNB Greenfield and the Decentralized Storage Economy](./part1/intro.md)
   - [1. Design Principles](./part1/ch1.md#1-design-principles)
   - [2. Assumptions](./part1/ch2.md#2-assumptions)
   - [3. The Architecture in General](./part1/ch3.md#3-the-architecture-in-general)
@@ -51,7 +51,7 @@
       - [7.4.2 Cross-Chain Operating Primitives](./part1/ch7.md#7-4-2-cross-chain-operating-primitives)
   - [8. "Not" Ending for the Design](./part1/ch8.md#8-not-ending-for-the-design)
     - [8.1 Acknowledgement](./part1/ch8.md#8-1-acknowledgement)
-- Part 2 Showcases in Labs
+- [Part 2 Showcases in Labs](./part2/intro.md)
   - [9 Showcases: Decentralized Storage](./part2/ch9.md#9-showcases-decentralized-storage)
     - [9.1 Web Hosting and Personal Cloud Drive](./part2/ch9.md#9-1-web-hosting-and-personal-cloud-drive)
     - [9.2 Data Availability Layer for Public Blockchain](./part2/ch9.md#9-2-data-availability-layer-for-public-blockchain)
@@ -67,7 +67,7 @@
     - [11.2 Token Curated Registries](./part2/ch11.md#11-2-token-curated-registries)
   - [12 Showcases: Personal Data Market](./part2/ch12.md#12-showcases-personal-data-market)
   - [13 From Showcases to Real Production](./part2/ch13.md#13-from-showcases-to-real-production)
-- Part 3 Simplified Technical Specifications
+- [Part 3 Simplified Technical Specifications](./part3/intro.md)
   - [14 Ecosystem Players](./part3/ch14.md./part2/ch1.md#14-ecosystem-players)
     - [14.1 Greenfield Validators](./part3/ch14.md#14-1-greenfield-validators)
     - [14.2 Storage Providers (SPs)](./part3/ch14.md#14-2-storage-providers-sps)
