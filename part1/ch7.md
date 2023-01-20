@@ -23,7 +23,7 @@ and can be the owners of the data objects and inherit different
 permissions. This will unleash many new business opportunities based on
 the data and its operations.
 
-## 7.1 Cross-chain with BSC
+## 7.1 Cross-Chain with BSC
 
 The cross-chain model expects to achieve the following goals:
 

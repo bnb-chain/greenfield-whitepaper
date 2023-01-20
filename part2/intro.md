@@ -17,7 +17,7 @@ inspire further experimentation and solid design to create the next generation o
       - [9.2.2 Data Availability Layer for the Layer 2 Rollups](./ch9.md#922-data-availability-layer-for-the-layer-2-rollups)
       - [9.2.3 Snapshots and Block Data Backups](./ch9.md#923-snapshots-and-block-data-backups)
   - [10 Showcases: New Ways of Digital Publishing](./ch10.md#10-showcases-new-ways-of-digital-publishing)
-    - [10.1 Grass-root Digital Publishing](./ch10.md#101-grass-root-digital-publishing)
+    - [10.1 Grass-Root Digital Publishing](./ch10.md#101-grass-root-digital-publishing)
     - [10.2 Data Market](./ch10.md#102-data-market)
     - [10.3 Risk: Anti-Piracy](./ch10.md#103-risk-anti-piracy)
   - [11 Showcases: User-Generated Content](./ch11.md#11-showcases-user-generated-content)

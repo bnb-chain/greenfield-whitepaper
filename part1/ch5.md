@@ -78,7 +78,7 @@ The payment of Greenfield is on a stream pay model, which will greatly
 reduce the complexity to implement the billing logic - more described in
 Part 3.
 
-## 5.2 Off-chain Payload Object Data Storage
+## 5.2 Off-Chain Payload Object Data Storage
 
 The payload data of the object, i.e. the bytes comprising the data
 files, photos, and videos, are stored off-chain in multiple SPs with a
