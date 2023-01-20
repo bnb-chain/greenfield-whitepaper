@@ -6,7 +6,7 @@ for the team to consider now.
 
 For example, the "execute" trait of a data object. That concept points
 out that some data are runnable programs. Greenfield may create a more
-transparent computing environment. Users are comfortable with using or
+transparent computing environment. Users are comfortable using or
 devoting their data to particular programs stored on Greenfield because
 they can verify the program, they do not have to worry about the program
 may change after their confirmation, and they know the program can only
