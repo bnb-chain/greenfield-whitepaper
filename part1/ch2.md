@@ -1,4 +1,4 @@
-# 2. Assumptions
+# 2 Assumptions
 
 The biggest assumption for the design is:
 

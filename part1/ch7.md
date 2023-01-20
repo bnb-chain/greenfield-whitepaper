@@ -1,4 +1,4 @@
-# 7. Economy of Data Assets
+# 7 Economy of Data Assets
 
 The real power of the Greenfield ecosystem lies in that the platform is
 not only designed to store the data, but also to support the creation of

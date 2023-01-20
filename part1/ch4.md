@@ -1,4 +1,4 @@
-# 4. BNB Greenfield Core
+# 4 BNB Greenfield Core
 
 ## 4.1 The BNB Greenfield Blockchain
 

@@ -1,4 +1,4 @@
-# 3. The Architecture in General
+# 3 The Architecture in General
 
 <div align="center"><img src="../assets/3%20Greenfield%20Economy%20General%20Architecture.png"></div>
 <div align="center"><i>Figure 3.1: Greenfield Economy General Architecture</i></div>

@@ -1,4 +1,4 @@
-# 5. The Greenfield Data Storage
+# 5 The Greenfield Data Storage
 
 The data stored on Greenfield has two main categories:
 

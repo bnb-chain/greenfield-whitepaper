@@ -1,4 +1,4 @@
-# 6. Storage Economics and Its Primitives
+# 6 Storage Economics and Its Primitives
 
 In this section, the underlying economics and the operating primitives
 are discussed aligned with the lifecycle of a data object. The below

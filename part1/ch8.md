@@ -1,4 +1,4 @@
-# 8. "Not" Ending for the Design
+# 8 "Not" Ending for the Design
 
 Many details are not covered in Part 1. While some topics will be added
 and expanded in Part 3, some are very strategic items that shoot too far

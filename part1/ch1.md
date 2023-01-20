@@ -1,4 +1,4 @@
-# 1. Design Principles
+# 1 Design Principles
 
 1. **Simplicity** - The design prefers this first principle over the other considerations. Simple solutions are not only
    easy to implement, run, maintain, and extend, but also friendly to software performance, which is a main goal of the
