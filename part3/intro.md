@@ -7,7 +7,7 @@ with either new sections added or existing sections revised.
 ## Table of Content
 
 - [Part 3 Simplified Technical Specifications](#introduction)
-  - [14 Ecosystem Players](./ch14.md./part2/ch1.md#14-ecosystem-players)
+  - [14 Ecosystem Players](./ch14.md#14-ecosystem-players)
     - [14.1 Greenfield Validators](./ch14.md#14-1-greenfield-validators)
     - [14.2 Storage Providers (SPs)](./ch14.md#14-2-storage-providers-sps)
     - [14.3 Greenfield dApps](./ch14.md#14-3-greenfield-dapps)

@@ -68,7 +68,7 @@
   - [12 Showcases: Personal Data Market](./part2/ch12.md#12-showcases-personal-data-market)
   - [13 From Showcases to Real Production](./part2/ch13.md#13-from-showcases-to-real-production)
 - [Part 3 Simplified Technical Specifications](./part3/intro.md)
-  - [14 Ecosystem Players](./part3/ch14.md./part2/ch1.md#14-ecosystem-players)
+  - [14 Ecosystem Players](./part3/ch14.md#14-ecosystem-players)
     - [14.1 Greenfield Validators](./part3/ch14.md#14-1-greenfield-validators)
     - [14.2 Storage Providers (SPs)](./part3/ch14.md#14-2-storage-providers-sps)
     - [14.3 Greenfield dApps](./part3/ch14.md#14-3-greenfield-dapps)
