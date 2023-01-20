@@ -1,6 +1,6 @@
 # 3. The Architecture in General
 
-<div align="center"><img src="../assets/figure3.1.png"></div>
+<div align="center"><img src="../assets/3%20Greenfield%20Economy%20General%20Architecture.png"></div>
 <div align="center"><i>Figure 3.1: Greenfield Economy General Architecture</i></div>
 
 The ecosystem of Greenfield is a "trinity" as shown in the above figure.
@@ -36,7 +36,7 @@ to provide the full feature set to applications and users to create,
 store, read, and trade data while using Greenfield blockchain as the
 metadata and ledger layer.
 
-<div align="center"><img src="../assets/figure3.2.jpg"></div>
+<div align="center"><img src="../assets/3.2%20BNB%20Greenfield%20Core.jpg"></div>
 <div align="center"><i>Figure 3.2: BNB Greenfield Core</i></div>
 
 BNB Greenfield blockchain and the SPs together comprise the center of

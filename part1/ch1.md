@@ -26,5 +26,5 @@
    first step Greenfield goes ahead with is to provide the freedom to choose among plenty of service suppliers at any
    time with trivial costs because they own the data.
 
-<div align="center"><img src="../assets/figure1.1.png"></div>
+<div align="center"><img src="../assets/1%20Decentralization%20Spectrum.png"></div>
 <div align="center"><i>Figure 1.1: Decentralization Spectrum</i></div>
