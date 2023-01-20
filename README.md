@@ -133,3 +133,27 @@
       - [23.1.3 P2P RPC](./part3/ch23.md#2313-p2p-rpc)
     - [23.2 List Operations](./part3/ch23.md#232-list-operations)
 - [Ending](./ending.md#ending)
+
+## Contribute
+
+1. Clone the repo and checkout a branch
+
+  ```shell
+  git clone https://github.com/bnb-chain/greenfield-whitepaper.git
+  git checkout -b <your-branch-name>
+  ```
+
+2. Make your changes
+
+3. Lint files before a pull request
+
+  ```shell
+  # install markdownlint-cli from https://github.com/igorshubovych/markdownlint-cli
+  markdownlint '**/*.md'  -c .github/workflows/markdownlint.yaml
+  ```
+
+4. Submit a pull request
+
+## License
+
+All the content are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

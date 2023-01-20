@@ -137,9 +137,9 @@ MD027: true
 MD028: true
 
 # MD029/ol-prefix - Ordered list item prefix
-MD029:
+MD029: false
   # List style
-  style: "one_or_ordered"
+  # style: "one_or_ordered"
 
 # MD030/list-marker-space - Spaces after list markers
 MD030:
