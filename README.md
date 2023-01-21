@@ -1,6 +1,5 @@
 # Greenfield Whitepaper
 
-
 ## Table of Content
 
 - [Overview](./overview.md)
