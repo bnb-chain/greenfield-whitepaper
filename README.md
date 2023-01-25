@@ -1,5 +1,37 @@
 # Greenfield Whitepaper
 
+The goal of the BNB Greenfield is to unleash the power of decentralized
+blockchain and storage technology on data ownership and data economy.
+
+BNB Greenfield is not only a new blockchain in BNB but also an
+infrastructure and ecosystem targeting to facilitate the decentralized
+data economy. It tries to achieve it by easing the process to store and
+manage data access and linking data ownership with the massive DeFi
+context of BSC.
+
+It focuses on 3 parts that differ from existing centralized and
+decentralized storage systems:
+
+- It enables Ethereum-compatible addresses to create and manage both data and token assets.
+
+- It natively links data permissions and management logic onto BSC as exchangeable assets and smart contract programs
+  with all other assets.
+
+- It provides developers with similar API primitives and performance as popular existing Web2 cloud storage.
+
+It is expected that Greenfield will set up a playground and test field
+for new data economy and dApp models, which eventually becomes part of
+the foundation for Web3.
+
+The white paper in this repository describes the main design and
+implementation of the platform. Many ideas are based on the great
+contributions of other leading protocols and teams. Please refer to the
+acknowledgment sections.
+
+Any constructive opinions, ideas, and feedback are welcome.
+
+Hope everyone enjoys the journey!
+
 ## Table of Content
 
 - [Overview](./overview.md)
