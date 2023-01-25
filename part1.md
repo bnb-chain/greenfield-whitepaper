@@ -277,10 +277,10 @@ SPs play a different role from Greenfield validators, although the same
 organizations or individuals can run both SPs and validators if they
 follow all the rules and procedures to get elected.
 
-SPs store the objects' real data, i.e. the payload data. Each SP runs
-its own object storage system. Similar to Amazon S3 and other object
-store systems, the objects stored on SPs are immutable. The users may
-delete and re-create the object, but they cannot modify it.
+SPs store the objects' real data, i.e. the payload data. Each SP runs its own object storage system. Similar to Amazon
+S3 and other object store systems, the objects stored on SPs are immutable. The users may delete and re-create the
+object (under the different ID, or under the same ID after certain publicly outgiving settings), but they cannot modify
+it.
 
 SPs have to register themselves first by depositing on the Greenfield
 blockchain as their "Service Stake". Greenfield validators will go
@@ -505,15 +505,13 @@ Data object creation is performed in two phases.
 
    d. Greenfield processes the "Seal" or "SealReject" transaction to begin the storage life cycle for the object.
 
-There are scenarios in which the primary SP doesn't cooperate with the
-user well: 1. The primary SP acknowledges the upload request, but
-doesn't accept the upload in time; 2. the primary SP signs the
-"uploaded" confirmation but doesn't seal the transaction in time.
-Greenfield expects the primary SP to finish the object creation by
-either "Seal", "SealReject", or "CancelRequest" transaction in a
-predefined time window; otherwise, the primary SP will be punished with
-a fine. Primary SP has no rational reasons to not acknowledge the upload
-request or doesn't seal in time, while the users have no rational
+Users can still "CancelRequest" to give up the creation request and get partially refunded.
+
+There are scenarios in which the primary SP doesn't cooperate with the user well: 1. The primary SP acknowledges the
+upload request, but doesn't accept the upload in time; 2. the primary SP signs the “uploaded” confirmation but doesn't
+seal the transaction in time. Greenfield expects the primary SP to finish the object creation by either “Seal” or
+“SealReject” transaction in a predefined time window; otherwise, the primary SP will be punished with a fine. Primary SP
+has no rational reasons to not acknowledge the upload request or doesn't seal in time, while the users have no rational
 reasons to create the requests but do not upload in time either.
 
 There may be a special case in which the "create" is triggered from BSC
