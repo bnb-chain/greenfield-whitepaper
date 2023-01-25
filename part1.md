@@ -279,7 +279,7 @@ follow all the rules and procedures to get elected.
 
 SPs store the objects' real data, i.e. the payload data. Each SP runs its own object storage system. Similar to Amazon
 S3 and other object store systems, the objects stored on SPs are immutable. The users may delete and re-create the
-object (under the different ID, or under the same ID after certain publicly outgiving settings), but they cannot modify
+object (under the different ID, or under the same ID after certain publicly declared settings), but they cannot modify
 it.
 
 SPs have to register themselves first by depositing on the Greenfield
