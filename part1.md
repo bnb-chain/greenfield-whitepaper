@@ -499,9 +499,7 @@ Data object creation is performed in two phases.
    c. The primary SP syncs with secondary SPs to set up the data redundancy, and then it signs a "Seal" transaction with
    the
    finalized metadata for storage. If the primary SP determines that it doesn't want to store the file due to whatever
-   reason,
-   it can also "SealReject" the request. If the primary SP cannot receive the uploaded file in time, it can also send a
-   "CancelCreation" request to cancel the client requests.
+   reason, it can also "SealReject" the request.
 
    d. Greenfield processes the "Seal" or "SealReject" transaction to begin the storage life cycle for the object.
 
