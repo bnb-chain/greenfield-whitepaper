@@ -506,9 +506,9 @@ Data object creation is performed in two phases.
 Users can still "CancelRequest" to give up the creation request and get partially refunded.
 
 There are scenarios in which the primary SP doesn't cooperate with the user well: 1. The primary SP acknowledges the
-upload request, but doesn't accept the upload in time; 2. the primary SP signs the “uploaded” confirmation but doesn't
-seal the transaction in time. Greenfield expects the primary SP to finish the object creation by either “Seal” or
-“SealReject” transaction in a predefined time window; otherwise, the primary SP will be punished with a fine. Primary SP
+upload request, but doesn't accept the upload in time; 2. the primary SP signs the "uploaded" confirmation but doesn't
+seal the transaction in time. Greenfield expects the primary SP to finish the object creation by either "Seal" or
+"SealReject" transaction in a predefined time window; otherwise, the primary SP will be punished with a fine. Primary SP
 has no rational reasons to not acknowledge the upload request or doesn't seal in time, while the users have no rational
 reasons to create the requests but do not upload in time either.
 
