@@ -714,7 +714,7 @@ Users can request to delete their data objects. Greenfield will remove
 the metadata from the blockchain state, while the primary SP should
 respond to this request and drop all the replicas and redundant
 segments. The payment stream will be closed with a reward rebate to
-encourage the deletion.
+encourage the deletion in the future.
 
 ## 7 Economy of Data Assets
 
@@ -777,10 +777,10 @@ layer implements the **Resource Mirror**. It is responsible for managing
 the resource assets that are defined on Greenfield but mirrored onto
 BSC. The top layer is the **Application Layer**, which are the smart
 contracts implemented by community developers on BSC to operate the
-mirrored resource entities with their primitives; Greenfield does not
-have such a layer. The real dApps will have some part in this
-Application Layer and also interact with Greenfield Core and all sorts
-of supporting infrastructures.
+mirrored resource entities with their primitives; Greenfield does not have 
+such an application layer since itself does not provide programmability yet.
+The real dApps will have some part in this Application Layer and also 
+interact with Greenfield Core and all sorts of supporting infrastructures.
 
 Because of the asymmetric framework, BSC focuses more on the
 application/control plane, while Greenfield is the data plane. To avoid
@@ -834,7 +834,7 @@ address scheme. The same address values on both sides mean the same
 account. They do not require an actual mirror.
 
 BNB is a natively pegged token from the genesis of Greenfield. The
-"Token Hub" contract is a system contract built within BSC to ensure
+"Token Hub" contract is a smart contract built on BSC to ensure
 that Greenfield cannot inflate BNB and secure the total circulation of
 BNB.
 
@@ -883,6 +883,8 @@ Object:
 - associate buckets to payment accounts on BSC
 
 Group:
+
+- mirror group from Greenfield to BSC
 
 - create a group on BSC
 

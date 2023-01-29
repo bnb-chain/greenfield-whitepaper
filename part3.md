@@ -1450,8 +1450,8 @@ cross-chain packages if there are any pending failed packages in their
 queue. It asks the BSC dApps must handle the failed packages in
 sequence.
 
-The communication layer can catch any exception thrown by the middle or
-application layer, so that package delivery won't be blocked by any
+The communication layer can catch any exception thrown by the resource mirror 
+layer or application layer, so that package delivery won't be blocked by any
 customized applications.
 
 ## 23 SP APIs
