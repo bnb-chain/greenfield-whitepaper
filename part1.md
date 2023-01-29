@@ -443,7 +443,7 @@ properly.
 
 ### 6.1 Account Creation
 
-To write a data object into Greenfield, the users must have an account,
+To write a data object into Greenfield, the user must have an account,
 or more specifically, an address on the BNB Greenfield blockchain. This
 can be done by transferring some BNB either from other addresses on
 Greenfield or from BSC.
@@ -456,7 +456,7 @@ on Greenfield with the same address on BSC.
 ### 6.2 Data Object Creation
 
 Users must create "Buckets" before creating objects. Similar to the
-"Bucket" concepts in AWS S3, "buckets" here are a data resource to group
+"Bucket" concept in AWS S3, "buckets" here is a data resource to group
 data objects from a user. All the objects under the same bucket will be
 stored on the same primary SP and downloadable from that SP. Users can
 create many buckets and store their data objects in different ones.
@@ -470,40 +470,23 @@ Data object creation is performed in two phases.
 
 1. Request phase:
 
-   a. Users first sign a "write" request with the initial object metadata, such as the object name, the bucket name,
-   size,
-   checksum, and the segment information and the redundancy setup as mandatory fields, while optionally content type and
-   the
-   storage preference, etc. It is worth noting that the checksum, the segment information, and the redundancy setup (
-   based on
-   Erasure Code, discussed in Part 3) will be calculated by the client software first. The client software will directly
-   upload the segments together with the hashes as checksums. The data may or may not be encrypted at the users' choice.
-
-   b. This request should be forwarded to the primary SP. After the primary SP determines to accept the request to store
-   the data
-   as the primary SP, it acknowledges the client by signing the same transaction message.
-
-   c. After getting the SP's acknowledgment, users can submit the
-   transaction to declare the creation of the objection on Greenfield.
-
+   a. Users first send a "get approval" request to primary SP before uploading object payload data. The request will be rejected if the primary SP isn't willing to store. The primary SP will acknowledge the client by signing the operation message and return the message to the client; 
+   
+   b. After getting the SP's acknowledgment, the client will construct one creating object transaction message, which contains primary SP's signature and the initial object metadata. The object metadata includes the object name, the bucket name, size, checksum, while optionally content type and the storage preference, etc. It is worth noting that the checksum, the segment information, and the redundancy setup (based on Erasure Code, discussed in Part 3) will be calculated by the client software first;
+   
+   c. Users submit the transaction to declare the creation of the objection on Greenfield and get the result of the transaction and transaction hash;
+   
    d. Greenfield accepts the "create" request and locks fees from users.
 
 2. Seal phase:
+ 
+   a. Users establish connection with the primary SP and send a uploading object payload data request with transaction hash; The primary SP checks if the object metadata is already created on Greenfield chain by transaction hash;
+   
+   b. Users start uploading the object payload data; The primary SP checks if the object payload data is correct by comparing the object's checksum with the object metadata on GreenField chain; Once comparation done successfully, the primary SP will sign the "uploaded" confirmation to the users; 
 
-   a. Users start connecting to the primary SP and uploading their data. Users have to sign some messages in the
-   hand-shaking
-   stage for authentication purposes.
+   c. The primary SP syncs with secondary SPs to set up the data redundancy, and then it signs a "Seal" transaction with the finalized metadata for storage. If the primary SP determines that it doesn't want to store the file due to whatever reason, it can also "SealReject" the request.
 
-   b. Once the data uploading has finished, the primary SP will sign the "uploaded" confirmation to the users.
-
-   c. The primary SP syncs with secondary SPs to set up the data redundancy, and then it signs a "Seal" transaction with
-   the
-   finalized metadata for storage. If the primary SP determines that it doesn't want to store the file due to whatever
-   reason, it can also "SealReject" the request.
-
-   d. Greenfield processes the "Seal" or "SealReject" transaction to begin the storage life cycle for the object.
-
-Users can still "CancelRequest" to give up the creation request and get partially refunded.
+   d. Greenfield processes the "Seal" or "SealReject" transaction to begin the storage life cycle for the object. Users can still "CancelRequest" to give up the creation request and get partially refunded.
 
 There are scenarios in which the primary SP doesn't cooperate with the user well: 1. The primary SP acknowledges the
 upload request, but doesn't accept the upload in time; 2. the primary SP signs the "uploaded" confirmation but doesn't
@@ -552,7 +535,7 @@ source to download from. If Primary SP is not available, the owner and
 Greenfield blockchain validators can challenge (described in Part 3) and
 change the object's primary SP to recover the downloading.
 
-Each object has a time-based traffic bandwidth quota, which is provided
+Each bucket has a time-based traffic bandwidth quota, which is provided
 free, i.e. nobody needs to pay for downloading a certain amount within a
 certain period. It is expected that this quota can satisfy most of the
 individual download needs as part of the normal usage conditions.
