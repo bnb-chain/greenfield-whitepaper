@@ -226,7 +226,7 @@ validator can be voted by the majority of the current validators to join
 in and gets elected as the active validator based on its delegation
 size. Here are the steps for becoming a new validator:
 
-1. Self-delegate stake authorization.
+1. Self delegator grants the delegate authorization to the gov module account.
 
 2. Initiate a proposal to become a validator.
 
