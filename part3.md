@@ -226,13 +226,13 @@ validator can be voted by the majority of the current validators to join
 in and gets elected as the active validator based on its delegation
 size. Here are the steps for becoming a new validator:
 
-1. Self delegator grants the delegate authorization to the gov module account.
+1. Self-delegator grants delegate authorization to the gov module account.
 
 2. Initiate a proposal to become a validator.
 
 3. Wait for the current validators to vote on this proposal.
 
-4. Once the proposal has passed, the new validator would be created automatically.
+4. Once the proposal has passed, the new validator will be created automatically.
 
 A validator may not always be a member of the active validator set,
 which will propose and produce blocks. Only the ones elected by the rank
@@ -258,7 +258,7 @@ authorization to the gov module account, and then a proposal should be
 submitted to get votes from the existing validators. After the passing
 of the proposal, the validator would be created, and the self-delegation
 would be done by the gov module automatically. The self delegation is required,
-and the open delegation from other delegators will be also supported later.
+and open delegation from other delegators will also be supported later.
 
 The validator creation logic should be changed later to reduce the
 concern of Cartels.
@@ -309,18 +309,17 @@ distributed.
 
 #### 16.3.3 Create Storage Provider
 
-If the runner wants to be a storage provider, he/she should submit a create
-storage provider proposal, the current active validators can vote on this
-proposal. After this proposal passed, the new storage provider would be
-created automatically.
+To be a storage provider, the runner should submit a proposal, and the current
+active validators can vote on this proposal. After this proposal passed, the
+new storage provider will be created automatically.
 
 Greenfield separates the roles of validator and storage providers.
 Although it is natural for the validators to maintain a meaningful and
 healthy number of storage providers, there should still be incentives
 for the validators to manage a reasonable number of SPs. Validators
-would get more data challenge rewards if there are more storage
-providers, the payment flow that is used for data challenge rewards
-would be like:
+will get more data challenge rewards if there are more storage
+providers. The payment flow that is used for data challenge rewards
+would be like this:
 
 $$ data challenge reserves = (1 - \frac{1}{SP Number + 1}) * Maximum Percent $$
 
@@ -328,10 +327,10 @@ Data availability challenge will be covered in the later section.
 
 #### 16.3.4 Remove Storage Provider
 
-Anyone can submit a proposal to remove a storage provider, for the
+Anyone can submit a proposal to remove a storage provider for the
 storage provider doesn't provide a good service or prefers to stop
 service. The current active validators can vote on this proposal. After
-this proposal passed, the SP would be restricted from providing services.
+this proposal passed, the SP would be restricted from storing new data.
 Other SPs or the data owners should start requesting to move the data off
 this "to-be-removed" SP. The "to-be-removed" SP has to facilitate the data
 moving so that it can get the full deposit back and no further slash.
@@ -662,8 +661,8 @@ guarantee data integrity and availability. Many of the existing
 solutions rely on intensive computing to generate proofs. However,
 Greenfield chooses the path of social monitoring and challenges.
 
-The holistic targets for Greenfield to ensure the storage provider(SP)
-stores the data as expected are as the below:
+The holistic target for Greenfield is to ensure that the storage provider(SP)
+stores the data as expected are as below:
 
 a. The primary SP splits the original object that the user uploads into
 segments correctly.
@@ -677,10 +676,10 @@ or falsified.
 
 A user needs to ensure that the object stored on Greenfield is really
 his object without downloading the whole object and comparing the
-contents. And also each SP should store the correct piece for each
-object as required and this information should be verified on the
+contents. And also, each SP should store the correct piece for each
+object as required, and this information should be verified on the
 Greenfield blockchain. A special metadata structure is introduced for
-every object for data challenges as the below:
+every object for data challenges as below:
 
 ```go
 type ObjectInfo struct {
@@ -695,7 +694,7 @@ Each storage provider will keep a local manifest for the pieces of each
 object that are stored on it. For the primary SP, the local manifest
 records each segment's hashes. The "*root*" field of the object's
 metadata in the above code stores the hash of the whole local manifest
-of the primary SP, e.g. it is the "*PiecesRootHash(SP0)*" in the below
+of the primary SP, e.g., it is the "*PiecesRootHash(SP0)*" in the below
 diagram. For the secondary SPs, the local manifest records each piece's
 hashes, and the hash of their local manifest files are recorded in the
 subRooList field in order, e.g. the 4th element of this list will store
@@ -740,13 +739,13 @@ the data in the data availability challenge as described below.
 <div align="center"><img src="./assets/19.2%20Data%20Availability%20Challenge.jpg"></div>
 <div align="center"><i>Figure 19.2 Data Availability Challenge</i></div>
 
-This data availability challenge is illustrated in above figure 19.2.
+This data availability challenge is illustrated in figure 19.2 above.
 
 The Greenfield validators have the responsibility to verify the data
 availability from the SPs. They form a voting committee to execute this
 task by the incentive of fees and potential fines (slashes) on SPs.
 
-A multi-signing logic, e.g. BLS-based multi-sig, is used to reach
+A multi-signing logic, e.g., BLS-based multi-sig, is used to reach
 another level of off-chain consensus among the Greenfield validators.
 When the validator votes for the data challenge, they co-sign an
 attestation and submit on-chain.
@@ -796,7 +795,7 @@ The overall data availability challenge mechanism works as below:
    block that contains the challenge, data challenge information, and
    the challenge result.
 
-5. The validators keep collecting the data challenge votes.
+5. The validators keep collecting the data availability challenge votes.
 
 6. Once there are more than 2/3 validators that have reached an agreement,
    called "attestment". Each validator can aggregate the signatures, assemble
@@ -812,14 +811,13 @@ The overall data availability challenge mechanism works as below:
    it can get. Besides the submission rewards, there are attestment
    rewards too. Only the validators whose votes wrapped into the
    attestation will be rewarded, so it may be that some validators
-   voted, but their votes were not assembled by the validator, they
-   won't get rewarded for this data availability challenges. Also for
-   the different results, the rewards may be different: the
-   "unavailable" result that slashes the SPs will get validators more
-   rewards.
+   voted, but their votes were not assembled by the validator. They
+   won't get rewarded for these data availability challenges. Also, for
+   different results, the rewards will be different: the "unavailable"
+   result that slashes the SPs will get validators more rewards.
 
 8. After a number of blocks, for example, 100 blocks, it is time to
-   clean the expired data availability challenge even if the
+   clean the expired data availability challenge, even if the
    submissions of attestments haven't arrived. In such a case, the
    challenge will just expire with no further actions.
 
@@ -829,7 +827,7 @@ The overall data availability challenge mechanism works as below:
    shift this piece of data.
 
 10. Once the cooling-off period time expires, this data availability can
-   be challenged again, if this piece of data is still unavailable,
+   be challenged again if this piece of data is still unavailable,
    the SP would be slashed again.
 
 ## 20 Storage Transactions
