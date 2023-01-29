@@ -226,7 +226,7 @@ validator can be voted by the majority of the current validators to join
 in and gets elected as the active validator based on its delegation
 size. Here are the steps for becoming a new validator:
 
-1. Self-delegate
+1. Self-delegate stake authorization.
 
 2. Initiate a proposal to become a validator.
 
@@ -237,7 +237,7 @@ size. Here are the steps for becoming a new validator:
 A validator may not always be a member of the active validator set,
 which will propose and produce blocks. Only the ones elected by the rank
 of delegation size will be the active validators. The election happens
-every block. The number of active validators is fixed and governed by
+every block. The maximum number of active validators is fixed and governed by
 the existing validators.
 
 It should be highlighted that the Greenfield validators are separated
@@ -253,11 +253,12 @@ organization can play two roles at the same time.
 
 #### 16.3.1 Create and Edit Validator
 
-To be a validator, the runner must self-delegate BNB, and then a
-proposal should be submitted to get votes from the existing validators.
-After the passing of the proposal, a transaction for creating the
-validator should be submitted. The self delegation is required, and the
-open delegation from other delegators will be also supported.
+To be a validator, the runner must self-delegate BNB, grants the stake
+authorization to the gov module account, and then a proposal should be
+submitted to get votes from the existing validators. After the passing
+of the proposal, the validator would be created, and the self-delegation
+would be done by the gov module automatically. The self delegation is required,
+and the open delegation from other delegators will be also supported later.
 
 The validator creation logic should be changed later to reduce the
 concern of Cartels.
@@ -273,9 +274,10 @@ type MsgCreateValidator struct {
     ValidatorAddress  string
     Pubkey            *types.Any
     Value             types.Coin
-    PoposalId         uint64
+    From              string
+    RelayerAddress    string
+    RelayerBlsKey     string
 }
-
 ```
 
 A validator can edit its description and commission by submitting an
@@ -290,6 +292,8 @@ type MsgEditValidator struct {
     ValidatorAddress  string
     CommissionRate    *github_com_cosmos_cosmos_sdk_types.Dec
     MinSelfDelegation *github_com_cosmos_cosmos_sdk_types.Int
+    RelayerAddress    string
+    RelayerBlsKey     string
 }
 ```
 
@@ -303,21 +307,12 @@ transaction rewards, and when validators change commission rates or
 quit, all the transaction rewards that are not withdrawn will also be
 distributed.
 
-In summary, the overall logic should be very similar to Cosmos 0.46,
-except following changes:
-
-1. a proposal is needed for creating a validator.
-
-2. only self-delegation is allowed in the early stage.
-
-3. no token mint/inflation in rewards.
-
 #### 16.3.3 Create Storage Provider
 
-Anyone can submit a storage provider creation proposal first, the current
-active validators can vote on this proposal. After this proposal passes,
-the new storage provider needs to submit a creating storage provider
-transaction to become a storage provider.
+If the runner wants to be a storage provider, he/she should submit a create
+storage provider proposal, the current active validators can vote on this
+proposal. After this proposal passed, the new storage provider would be
+created automatically.
 
 Greenfield separates the roles of validator and storage providers.
 Although it is natural for the validators to maintain a meaningful and
@@ -336,13 +331,13 @@ Data availability challenge will be covered in the later section.
 Anyone can submit a proposal to remove a storage provider, for the
 storage provider doesn't provide a good service or prefers to stop
 service. The current active validators can vote on this proposal. After
-this proposal passes, other SPs or the data owners should start
-requesting to move the data off this "to-be-removed" SP. The
-"to-be-removed" SP has to facilitate the data moving so that it can get
-the full deposit back and no further slash. Actually, even if it chooses
-to not cooperate, the data can be recovered from the other SPs. After
-all the data has been migrated, anyone can submit a removal storage
-provider transaction to remove the storage provider.
+this proposal passed, the SP would be restricted from providing services.
+Other SPs or the data owners should start requesting to move the data off
+this "to-be-removed" SP. The "to-be-removed" SP has to facilitate the data
+moving so that it can get the full deposit back and no further slash.
+Actually, even if it chooses to not cooperate, the data can be recovered from
+the other SPs. After all the data has been migrated, this "to-be-removed" SP
+can withdraw all its deposit, and this SP would be removed.
 
 ## 17 Storage MetaData Models
 
@@ -670,14 +665,15 @@ Greenfield chooses the path of social monitoring and challenges.
 The holistic targets for Greenfield to ensure the storage provider(SP)
 stores the data as expected are as the below:
 
-a. The primary SP stores the correct object that the user uploaded.
+a. The primary SP splits the original object that the user uploads into
+segments correctly.
 
-b. The SP stores assigned pieces either as the role of primary SP or
-secondary SP correctly, and the data pieces stored should not be
-corrupted or falsified.
+b. The primary SP encodes the segments into redundant Erasing Code pieces
+correctly, and distributes them to the secondary SP as agreed.
 
-c. The redundant Erasing Code pieces stored in the secondary SPs can
-recover the original segment stored in the primary SP.
+c. The SP stores assigned pieces either as the role of primary SP
+or secondary SP correctly, and the data pieces stored should not be corrupted
+or falsified.
 
 A user needs to ensure that the object stored on Greenfield is really
 his object without downloading the whole object and comparing the
@@ -759,8 +755,7 @@ The overall data availability challenge mechanism works as below:
 
 1. Anyone can submit a transaction to challenge data availability. The
    challenge information will be written into the on-chain event
-   triggered after the transaction is processed. This is the first
-   type of challenge.
+   triggered after the transaction is processed.
 
 2. The second way to trigger the challenge is more common: at the end
    of the block process phase of each block, Greenfield will use a
@@ -801,16 +796,16 @@ The overall data availability challenge mechanism works as below:
    block that contains the challenge, data challenge information, and
    the challenge result.
 
-5. The validators should collect data challenge votes, aggregates the
-   signatures, assembles data challenge attestation, and submits the
-   vote when there are more than 2/3 validators that have reached an
-   agreement, called "attestment". In order to solve the concern that
-   validators may just follow the others' results and not perform the
-   check themselves, a "commit-and-reveal" logic will be introduced.
+5. The validators keep collecting the data challenge votes.
 
-6. Any validator can submit the attestation with its own vote and
-   enough others' votes on-chain through a transaction and this data
-   challenge attestation transaction will be executed and update the
+6. Once there are more than 2/3 validators that have reached an agreement,
+   called "attestment". Each validator can aggregate the signatures, assemble
+   data challenge attestation, and submit an attestation transaction. In order
+   to solve the concern that validators may just follow the others' results
+   and not perform the check themselves, a "commit-and-reveal" logic will be
+   introduced.
+
+7. The data challenge attestation transaction will be executed and update the
    related states. The first validator who submits the attestation
    can get a submission reward, while the later submission will be
    rejected. The more votes the submitter aggregates, the more reward
@@ -823,17 +818,17 @@ The overall data availability challenge mechanism works as below:
    "unavailable" result that slashes the SPs will get validators more
    rewards.
 
-7. After a number of blocks, for example, 100 blocks, it is time to
-   confirm the data availability challenge results even if the
+8. After a number of blocks, for example, 100 blocks, it is time to
+   clean the expired data availability challenge even if the
    submissions of attestments haven't arrived. In such a case, the
    challenge will just expire with no further actions.
 
-8. Once a case of data availability is successfully challenged, i.e.
+9. Once a case of data availability is successfully challenged, i.e.
    the data is confirmed not available with quality service, there
    will be a cooling-off period for the SPs to regain, recover, or
    shift this piece of data.
 
-9. Once the cooling-off period time expires, this data availability can
+10. Once the cooling-off period time expires, this data availability can
    be challenged again, if this piece of data is still unavailable,
    the SP would be slashed again.
 
