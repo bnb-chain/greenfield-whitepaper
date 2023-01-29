@@ -470,9 +470,17 @@ Data object creation is performed in two phases.
 
 1. Request phase:
 
-   a. Users establish the connection with the primary SP and send a "get approval" message to ask if it is willing to store the object; The primary SP acknowledges the request by signing a message about the operation and returns it to the client;
+   a. Users establish the connection with the primary SP and send a 
+   "get approval" message to ask if it is willing to store the object;
+   The primary SP acknowledges the request by signing a message about 
+   the operation and returns it to the client;
    
-   b. After the primary SP determines to accept the request to store the data as the primary SP, the client constructs a "write" transaction message with the primary SP's signature and the initial object metadata, such as the object name, the bucket name, size, checksum, while optionally content type and the storage preference, etc; Users sign the transaction and submit it to Greenfield chain;
+   b. After the primary SP determines to accept the request to store the
+   data as the primary SP, the client constructs a "write" transaction
+   message with the primary SP's signature and the initial object metadata,
+   such as the object name, the bucket name, size, checksum, while 
+   optionally content type and the storage preference, etc; Users sign the
+   transaction and submit it to Greenfield chain;
    
    c. Users get the result of the transaction and transaction hash;
 
@@ -480,13 +488,24 @@ Data object creation is performed in two phases.
 
 2. Seal phase:
 
-   a. Users connect to the primary SP and send transaction hash; The primary SP uses the transaction hash to check if the object metadata is already created on Greenfield chain;
+   a. Users connect to the primary SP and send transaction hash; The primary
+   SP uses the transaction hash to check if the object metadata is already
+   created on Greenfield chain;
    
-   b. Users start uploading the object payload data to the primary SP if the object metadata is already created; The primary SP checks if the payload data matches the object's metadata by comparing the checksum of the object on Greenfield chain and the checksum of the payload data; If it matches the the primary SP will sign the "uploaded" confirmation to the users;
+   b. Users start uploading the object payload data to the primary SP if the
+   object metadata is already created; The primary SP checks if the payload 
+   data matches the object's metadata by comparing the checksum of the object
+   on Greenfield chain and the checksum of the payload data; If it matches
+   the the primary SP will sign the "uploaded" confirmation to the users;
 
-   c. The primary SP syncs with secondary SPs to set up the data redundancy, and then it signs a "Seal" transaction with the finalized metadata for storage. If the primary SP determines that it doesn't want to store the file due to whatever reason, it can also "SealReject" the request.
+   c. The primary SP syncs with secondary SPs to set up the data redundancy, 
+   and then it signs a "Seal" transaction with the finalized metadata for 
+   storage. If the primary SP determines that it doesn't want to store the 
+   file due to whatever reason, it can also "SealReject" the request.
 
-   d. Greenfield processes the "Seal" or "SealReject" transaction to begin the storage life cycle for the object. Users can still "CancelRequest" to give up the creation request and get partially refunded.
+   d. Greenfield processes the "Seal" or "SealReject" transaction to begin
+   the storage life cycle for the object. Users can still "CancelRequest" to
+   give up the creation request and get partially refunded.
 
 There are scenarios in which the primary SP doesn't cooperate with the user well: 1. The primary SP acknowledges the
 upload request, but doesn't accept the upload in time; 2. the primary SP signs the "uploaded" confirmation but doesn't
