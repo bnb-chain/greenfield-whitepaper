@@ -75,7 +75,7 @@ with either new sections added or existing sections revised.
 
 There are several player roles for the whole Greenfield ecosystem.
 
-<div align="center"><img src="./assets/14.1%20All%20Players%20of%20Greenfield.jpg"></div>
+<div align="center"><img src="./assets/14.1%20All%20Players%20of%20Greenfield.jpg"  height="80%" width="80%"></div>
 <div align="center"><i>Figure 14.1: All Players of Greenfield</i></div>
 
 ### 14.1 Greenfield Validators
@@ -102,7 +102,7 @@ secure validator setup of PoS blockchains. "Sentry Nodes" are used to
 defend against DDoS and provide a secure private network, as shown in
 the below diagram.
 
-<div align="center"><img src="./assets/14.2%20Greenfield%20Blockchain%20Network.jpg"></div>
+<div align="center"><img src="./assets/14.2%20Greenfield%20Blockchain%20Network.jpg"  height="80%" width="80%"></div>
 <div align="center"><i>Figure 14.2: Greenfield Blockchain Network</i></div>
 
 ### 14.2 Storage Providers (SPs)
@@ -122,7 +122,7 @@ requests in REST APIs or P2P RPCs.
 
 The typical network topology of connected SPs is as the below figure.
 
-<div align="center"><img src="./assets/14.3%20Greenfield%20Storage%20Provider%20Network.jpg"></div>
+<div align="center"><img src="./assets/14.3%20Greenfield%20Storage%20Provider%20Network.jpg" height="80%" width="80%"></div>
 <div align="center"><i>Figure 14.3: Greenfield Storage Provider Network</i></div>
 
 SPs may provide plenty of convenient services for users and dApps to get
@@ -533,7 +533,7 @@ size segment but the last segment, which is the actual size. For
 example, if one object has a size 50MB, only the size of the last
 segment is 2 MB and the other segments' sizes are all 16MB.
 
-<div align="center"><img src="./assets/18.1%20Object%20Segmentation.jpg"></div>
+<div align="center"><img src="./assets/18.1%20Object%20Segmentation.jpg"  height="50%" width="50%"></div>
 <div align="center"><i>Figure 18.1 Object Segmentation</i></div>
 
 ### 18.2 Erasure Code and Data Redundancy
@@ -573,7 +573,7 @@ This convention is to save the metadata size. An example of a 50M object
 stored with one primary SP, SP0, and 6 secondary SPs, SP1-SP6 is shown
 in the below diagram.
 
-<div align="center"><img src="./assets/18.2%20EC%20for%20Segments%20in%20Different%20Secondary%20SPs.jpg"></div>
+<div align="center"><img src="./assets/18.2%20EC%20for%20Segments%20in%20Different%20Secondary%20SPs.jpg"  height="80%" width="80%"></div>
 <div align="center"><i>Figure 18.2 EC for Segments in Different Secondary SPs</i></div>
 
 #### 18.2.2 Erasure Code
@@ -611,7 +611,7 @@ The EC module has two additional functions：
 
 Here is a detailed EC encoding setup.
 
-<div align="center"><img src="./assets/18.3%20EC%20Encoding.jpg"></div>
+<div align="center"><img src="./assets/18.3%20EC%20Encoding.jpg"  height="80%" width="80%"></div>
 <div align="center"><i>Figure 18.3 EC Encoding</i></div>
 
 As the example shown in the figure above, the 50M payload of the object
@@ -705,7 +705,7 @@ hashes, and the hash of their local manifest files are recorded in the
 subRooList field in order, e.g. the 4th element of this list will store
 the 4th secondary SP's "*PiecesRootHash(SP4)*" in the below diagram.
 
-<div align="center"><img src="./assets/19.1%20Hashes%20for%20Data%20Integrity.jpg"></div>
+<div align="center"><img src="./assets/19.1%20Hashes%20for%20Data%20Integrity.jpg"  height="80%" width="80%"></div>
 <div align="center"><i>Figure 19.1 Hashes for Data Integrity</i></div>
 
 These root hashes serve as the checksum for the data segments and
@@ -741,7 +741,7 @@ the data in the data availability challenge as described below.
 
 ### 19.2 Data Availability Challenge Process
 
-<div align="center"><img src="./assets/19.2%20Data%20Availability%20Challenge.jpg"></div>
+<div align="center"><img src="./assets/19.2%20Data%20Availability%20Challenge.jpg"  height="80%" width="80%"></div>
 <div align="center"><i>Figure 19.2 Data Availability Challenge</i></div>
 
 This data availability challenge is illustrated in above figure 19.2.
@@ -989,7 +989,7 @@ deposit, several fields will be recorded for this stream account:
 
 *Buffer Balance = - Netflow Rate \* pre-configed ReserveTime if Netflow Rate is negative*
 
-<div align="center"><img src="./assets/21.1%20How%20a%20User%20Receives%20Inflow%20and%20Outflow%20of%20Funds.jpg"></div>
+<div align="center"><img src="./assets/21.1%20How%20a%20User%20Receives%20Inflow%20and%20Outflow%20of%20Funds.jpg"  height="60%" width="60%"></div>
 <div align="center"><i>Figure 21.1 How a User Receives Inflow and Outflow of Funds</i></div>
 
 Every time a user creates, updates, or deletes a payment stream, many
@@ -1433,7 +1433,7 @@ the communication layer, but the ACK package should contain enough
 information for the resource mirror layer or the application layer to
 recover to the original state.
 
-<div align="center"><img src="./assets/22.3%20Error%20and%20Failure%20Handling.jpg"></div>
+<div align="center"><img src="./assets/22.3%20Error%20and%20Failure%20Handling.jpg"  height="60%" width="60%"></div>
 <div align="center"><i>Figure 22.1 Cross-chain Error and Failure Handling</i></div>
 
 When Greenfield emits an ACK or FAIL_ACK package, the registered
@@ -1450,7 +1450,7 @@ cross-chain packages if there are any pending failed packages in their
 queue. It asks the BSC dApps must handle the failed packages in
 sequence.
 
-The communication layer can catch any exception thrown by the resource mirror 
+The communication layer can catch any exception thrown by the resource mirror
 layer or application layer, so that package delivery won't be blocked by any
 customized applications.
 

@@ -74,7 +74,7 @@ fundamentals are also important to highlight.
    first step Greenfield goes ahead with is to provide the freedom to choose among plenty of service suppliers at any
    time with trivial costs because they own the data.
 
-<div align="center"><img src="./assets/1%20Decentralization%20Spectrum.png"></div>
+<div align="center"><img src="./assets/1%20Decentralization%20Spectrum.png" height="80%" width="80%"></div>
 <div align="center"><i>Figure 1.1: Decentralization Spectrum</i></div>
 
 ## 2 Assumptions
@@ -595,7 +595,7 @@ or by an EOA.
 
 ### 6.6 Fees and Payments
 
-<div align="center"><img src="./assets/6.6%20Payment%20Stream%20Flow.png"></div>
+<div align="center"><img src="./assets/6.6%20Payment%20Stream%20Flow.png" height="80%" width="80%"></div>
 <div align="center"><i>Figure 6.1: Payment Stream Flow</i></div>
 
 The storage fee will be charged on Greenfield in a steam payment style
@@ -768,7 +768,7 @@ will be used as the self-stake of validators and early days gas fees.
 
 ### 7.2 Framework
 
-<div align="center"><img src="./assets/7.1%20Cross-chain%20Architecture.jpg"></div>
+<div align="center"><img src="./assets/7.1%20Cross-chain%20Architecture.jpg"  height="80%" width="80%"></div>
 <div align="center"><i>Figure 7.1: Cross-chain Architecture</i></div>
 
 The bottom layer is a cross-chain **Communication Layer**, which focuses
@@ -777,9 +777,9 @@ layer implements the **Resource Mirror**. It is responsible for managing
 the resource assets that are defined on Greenfield but mirrored onto
 BSC. The top layer is the **Application Layer**, which are the smart
 contracts implemented by community developers on BSC to operate the
-mirrored resource entities with their primitives; Greenfield does not have 
+mirrored resource entities with their primitives; Greenfield does not have
 such an application layer since itself does not provide programmability yet.
-The real dApps will have some part in this Application Layer and also 
+The real dApps will have some part in this Application Layer and also
 interact with Greenfield Core and all sorts of supporting infrastructures.
 
 Because of the asymmetric framework, BSC focuses more on the
