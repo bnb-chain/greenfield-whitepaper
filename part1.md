@@ -494,7 +494,7 @@ Data object creation is performed in two phases.
    hand-shaking
    stage for authentication purposes.
 
-   b. Once the data uploading has finished, the primary SP will sign the "uploaded" confirmation to the users.
+   b. Once the payload data uploading has finished, the primary SP will sign the "uploaded" confirmation to the users.
 
    c. The primary SP syncs with secondary SPs to set up the data redundancy, and then it signs a "Seal" transaction with
    the
