@@ -901,7 +901,7 @@ fee and read package fee:
 2. There is a free quota for users' objects to be read based on their
    size, content types, and more. If exceeded, i.e. the object data
    has been downloaded too many times, SP will limit the bandwidth
-   for more downloads. users can raise their data package level to
+   for more downloads. Users can raise their data package level to
    get more download quota. Every data package has a fixed price.
 
 As described in Part 1, the fees are paid on Greenfield in the style of
@@ -1005,7 +1005,7 @@ payment module will be settled.
 - If the NetFlow rate is negative, the associated amount of BNB will
   be reserved in a buffer balance. It is used to avoid the dynamic
   balance becoming negative. When the dynamic balance becomes under
-  the threshold, the account will be liquidated.
+  the threshold, the account will be forced settled.
 
 - CRUD Timestamp will become the current timestamp.
 
@@ -1017,8 +1017,11 @@ payment module will be settled.
 
 ```go
 type PaymentConfig struct {
-    ReserveTime   uint64 // Balance need to be reserved for NetOutFlow e.g. 6 month
-    LiquidateTime uint64 // If static balance is less than NetOutFlowRate * LiquidateTime, the account can be Liquidated
+    // Time duration which the buffer balance need to be reserved for NetOutFlow e.g. 6 month
+    ReserveTime      uint64
+    // Time duration threshold of forced settlement.
+    // If dynamic balance is less than NetOutFlowRate * forcedSettleTime, the account can be forced settled.
+    ForcedSettleTime uint64
 }
 ```
 
@@ -1094,7 +1097,7 @@ If a user doesn't deposit for a long time, his previous deposit may be
 all used up for the stored objects. Greenfield has a forced settlement
 mechanism to ensure enough funds are secured for further service fees.
 
-There are two configurations, ReserveTime and LiquidateTime. Let's say
+There are two configurations, ReserveTime and ForcedSettleTime. Let's say
 7 days and 1 day. If a user wants to store an object at the price of
 approximately $0.1 per month($0.00000004/second), he must reserve fees
 for 7 days in buffer balance, which is `$0.00000004 * 7 * 86400 =
@@ -1265,7 +1268,7 @@ Let's set the rate as R.
 - User -\> Secondary SP 6 flow rate: 0.05 \* R
 
 The stream records of the payment accounts will be adjusted. If the
-reserved time is 6 months, the user has to reserve `(0.7 * R * 6 * 30 * 24 * 60 * 60) = 5.6152092704419466e-05` BNB in
+reserved time is 6 months, the user has to reserve `(R * 6 * 30 * 24 * 60 * 60) = 8.021727529202782e-05` BNB in
 the Buffer Balance. If the balance of the payment account is not enough, either the trigger
 transaction will fail or the account will be marked as "insufficient".
 
