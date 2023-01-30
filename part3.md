@@ -226,7 +226,8 @@ validator can be voted by the majority of the current validators to join
 in and gets elected as the active validator based on its delegation
 size. Here are the steps for becoming a new validator:
 
-1. Self-delegator grants delegate authorization to the gov module account.
+1. Self-delegator grants delegate authorization to the gov module account. Delegate
+   authorization allows the grantee to execute MsgDelegate for the granter.
 
 2. Initiate a proposal to become a validator.
 
@@ -253,11 +254,11 @@ organization can play two roles at the same time.
 
 #### 16.3.1 Create and Edit Validator
 
-To be a validator, the runner must self-delegate BNB, grants the stake
-authorization to the gov module account, and then a proposal should be
-submitted to get votes from the existing validators. After the passing
-of the proposal, the validator would be created, and the self-delegation
-would be done by the gov module automatically. The self delegation is required,
+To become a validator, the runner must grant the delegate authorization to the
+gov module account with enough BNB, and then a proposal should be
+submitted to get votes from the existing validators. After the proposal is passed,
+the self-delegation would be done by the gov module, and the validator
+would be created automatically. The self delegation is required,
 and open delegation from other delegators will also be supported later.
 
 The validator creation logic should be changed later to reduce the
@@ -309,8 +310,8 @@ distributed.
 
 #### 16.3.3 Create Storage Provider
 
-To be a storage provider, the runner should submit a proposal, and the current
-active validators can vote on this proposal. After this proposal passed, the
+To become a storage provider, the runner should submit a proposal, and the current
+active validators can vote on this proposal. Once the proposal is passed, the
 new storage provider will be created automatically.
 
 Greenfield separates the roles of validator and storage providers.
@@ -329,11 +330,12 @@ Data availability challenge will be covered in the later section.
 
 Anyone can submit a proposal to remove a storage provider for the
 storage provider doesn't provide a good service or prefers to stop
-service. The current active validators can vote on this proposal. After
-this proposal passed, the SP would be restricted from storing new data.
-Other SPs or the data owners should start requesting to move the data off
+service. The current active validators can vote on this proposal. Once this
+proposal is passed, the SP will be restricted from accepting new object-storing
+requests, but still has the obligation to serve query requests. Other
+SPs or the data owners should start requesting to move the data off
 this "to-be-removed" SP. The "to-be-removed" SP has to facilitate the data
-moving so that it can get the full deposit back and no further slash.
+moving so that it can get the full deposit back and avoid further slash.
 Actually, even if it chooses to not cooperate, the data can be recovered from
 the other SPs. After all the data has been migrated, this "to-be-removed" SP
 can withdraw all its deposit, and this SP would be removed.
@@ -795,17 +797,17 @@ The overall data availability challenge mechanism works as below:
    block that contains the challenge, data challenge information, and
    the challenge result.
 
-5. The validators keep collecting the data availability challenge votes.
+5. The data availability challenge votes are propagated through the p2p network.
 
-6. Once there are more than 2/3 validators that have reached an agreement,
-   called "attestment". Each validator can aggregate the signatures, assemble
+6. Once a validator collects an agreement from more than 2/3 validators, an
+   "attestment" is concluded. The validator can aggregate the signatures, assemble
    data challenge attestation, and submit an attestation transaction. In order
    to solve the concern that validators may just follow the others' results
    and not perform the check themselves, a "commit-and-reveal" logic will be
    introduced.
 
-7. The data challenge attestation transaction will be executed and update the
-   related states. The first validator who submits the attestation
+7. The data challenge attestation transaction will be executed
+   on-chain. The first validator who submits the attestation
    can get a submission reward, while the later submission will be
    rejected. The more votes the submitter aggregates, the more reward
    it can get. Besides the submission rewards, there are attestment
@@ -816,10 +818,9 @@ The overall data availability challenge mechanism works as below:
    different results, the rewards will be different: the "unavailable"
    result that slashes the SPs will get validators more rewards.
 
-8. After a number of blocks, for example, 100 blocks, it is time to
-   clean the expired data availability challenge, even if the
-   submissions of attestments haven't arrived. In such a case, the
-   challenge will just expire with no further actions.
+8. After a number of blocks, for example, 100 blocks, the data availability
+   challenge will expire even if the submissions of attestments haven't
+   arrived. In such a case, the challenge will just expire with no further actions.
 
 9. Once a case of data availability is successfully challenged, i.e.
    the data is confirmed not available with quality service, there
