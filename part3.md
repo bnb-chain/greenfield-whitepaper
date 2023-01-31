@@ -362,7 +362,7 @@ globally unique. Every user account can create a bucket. The account
 will become the "owner" of the bucket.
 
 Each bucket should be associated with its own Primary SP, and the payment
-accounts for Read and Right. The owner's address will be the default
+accounts for Read and Store. The owner's address will be the default
 payment account.
 
 ### 17.2 Object
@@ -433,8 +433,32 @@ default, only the resource owner has permission to access its resources.
 - Shared Permission: These permissions are managed by the permission
   module. It usually manages who has permission for which resources.
 
-Each permission information is stored separately in a triple(E.g
-"Resource + who + PermissionType") in the blockchain state.
+There are two types of permissions: **Single User Permission** and **Group User Permission**, which
+are stored in different formats in the blockchain state.
+
+##### Single User Permission
+
+- Bucket: `0x10 | ResouceID(Bucket) | Address(Grantee) ➝ Protobuf(PermissionInfo)`
+- Object: `0x11 | ResouceID(Object) | Address(Grantee) ➝ Protobuf(PermissionInfo)`
+- Group: `0x12 | ResouceID(Group) | Address(Grantee) ➝ Protobuf(PermissionInfo)`
+
+```go
+type permissionInfo struct {
+  ActionList     []Action  // [GetObject,PutObject...]
+  resourceList   []string  // optional，For prefix resource.
+  Allow          Effect    // optional, For some scenarios where some permissions need to be prohibited
+}
+```
+
+##### Group User Permission
+
+- Bucket: `0x20 | ResouceID(Bucket)  ➝ Protobuf(GroupPermissionInfo)`
+- Object: `0x21 | ResouceID(Object)  ➝ Protobuf(GroupPermissionInfo)`
+- Group: `0x22 | ResouceID(Group)  ➝ Protobuf(GroupPermissionInfo)`
+
+```go
+type GroupPermissionInfo map[uint32]permissionInfo // groupID ➝ permissionInfo mapping, mapsize limit to 20?
+```
 
 #### 17.4.3 Permission Removal
 
@@ -449,12 +473,12 @@ transaction handling.
 
 Typical permissions for the resources are listed below.
 
-| Permission Type | Bucket                                    | Object                                  | Group                                        |
-|-----------------|-------------------------------------------|-----------------------------------------|----------------------------------------------|
-| Write           | ✅ Allow PutObject                         | ❌                                       | ✅ Allow AddMember                            |
-| Read            | ✅ Allow ListObject                        | ✅ Allow GetObject                       | ✅ Allow ListMember As a member of this group |
-| Full Control    | ✅ Allow Put/ListObject, Allow DeleteBucket | ✅ Allow GetObject, Allow DeleteObject   | ✅ Allow DeleteMember, Allow ListMember       |
-| Execute         | ❌                                         | ✅ Allow Execute                         | ❌                                            |
+| Permission Type | Bucket                                     | Object                                | Group                                        |
+| --------------- | ------------------------------------------ | ------------------------------------- | -------------------------------------------- |
+| Write           | ✅ Allow PutObject                          | ❌                                     | ✅ Allow AddMember                            |
+| Read            | ✅ Allow ListObject                         | ✅ Allow GetObject                     | ✅ Allow ListMember As a member of this group |
+| Full Control    | ✅ Allow Put/ListObject, Allow DeleteBucket | ✅ Allow GetObject, Allow DeleteObject | ✅ Allow DeleteMember, Allow ListMember       |
+| Execute         | ❌                                          | ✅ Allow Execute                       | ❌                                            |
 
 Let's say Greenfield has two accounts, Bob(0x1110) and Alice(0x1111). A
 basic example scenario would be:
@@ -462,10 +486,10 @@ basic example scenario would be:
 - Bob uploaded a picture named avatar.jpg into a bucket named "profile";
 
 - Bob grants the GetObject action permission for the object avatar.jpg to Alice,
-  it will store a key 0x1 | ResourceID(profile_avatar.jpg) | 0x1111 into a permission state tree.
+  it will store a key `0x11 | ResourceID(profile_avatar.jpg) | Address(Alice)` into a permission state tree.
 
 - when Alice wants to read the avatar.jpg, the SP should check the
-  Greenfield blockchain that whether the key 0x1 | ResourceID(profile_avatar.jpg) | 0x1111 existed in the
+  Greenfield blockchain that whether the key `Prefix(ObjectPermission) | ResourceID(profile_avatar.jpg) | Address(Alice)` existed in the
   permission state tree, and whether the action list contains GetObject.
 
 Let's move on to more complex scenarios:
@@ -473,7 +497,7 @@ Let's move on to more complex scenarios:
 - Bob created a bucket named "profile"
 
 - Bob grants the PutObject action permission for the bucket "profile"
-  to Alice, the key 0x0 | ResourceID(profile) | Address(Alice)
+  to Alice, the key `0x10 | ResourceID(profile) | Address(Alice)`
   will be put into the permission state tree.
 
 - When Alice wants to upload an object named avatar.jpg into the
@@ -481,8 +505,8 @@ Let's move on to more complex scenarios:
   executed on the chain.
 
 - The Greenfield blockchain needs to confirm that Alice has permission
-  to operate, so it checks whether the key 0x0 |
-  ResourceID(profile) | Address(Alice) existed in the permission
+  to operate, so it checks whether the key `0x10 |
+  ResourceID(profile) | Address(Alice)` existed in the permission
   state tree and got the permission information if it existed.
 
 - If the permission info shows that Alice has the PutObject action
@@ -492,20 +516,21 @@ Another more complex scenario that contains groups:
 
 - Bob creates a group named "Games", and creates a bucket named "profile".
 
-- Bob adds Alice to the Games group, the key 0x0 | ResourceID(Games)
-  | Address(Alice) will be put into the permission state tree
+- Bob adds Alice to the Games group, the key `0x12 | ResourceID(Games)
+  | Address(Alice)` will be put into the permission state tree
 
 - Bob put a picture avatar.jpg to the bucket profile and grants the
   CopyObject action permission to the group Games
 
 - When Alice wants to copy the object avatar.jpg . First, Greenfield
-  blockchain checks whether she has permission via the key 0x0 |
-  ResourceID(avatar.jpg) | Address(Alice); if it is a miss,
+  blockchain checks whether she has permission via the key `0x11 |
+  ResourceID(avatar.jpg) | Address(Alice)`; if it is a miss,
   Greenfield will iterate all groups that the object avatar.jpg
   associates and check whether Alice is a member of one of these
-  groups by checking, e.g. if the key 0x0 | ResourceID(group, e.g.
-  Games) | Address(Alice) existed to mirror the permission of the
-  group to the member Alice.
+  groups by checking, e.g. if the key `0x21 | ResourceID(group, e.g.
+  Games)` existed, then iterate the `permissionInfo` map, and determine if Alice is in
+  a group which has the permission to do CopyObject operation via the key
+  `0x12| ResourceID(Games) | Address(Alice)`
 
 ## 18 Payload Storage Management
 
@@ -1466,7 +1491,7 @@ All SPs should provide APIs listed in this section.
 
 All objects can be identified and accessed via a universal path:
 
-*gnfd://\<bucket_name\>/\[prefix\]/\<other prefixes\>\[0..n\]/object-id*
+*gnfd://\<bucket_name\>\<object_name\>*?\[parameter\]*
 
 *where:*
 
@@ -1474,11 +1499,13 @@ All objects can be identified and accessed via a universal path:
 
 - *bucket_name is the bucket name of the object, which is mandatory*
 
-- *prefix and other prefixes are all prefixes defined for the object, which are optional*
+- *object_name is the name of the object, which is mandatory*
 
-- *object-id is the ID for the object, which is mandatory*
+- *parameter is a list of key-value pair for the additional information for the URI, which is optional*
 
-This path should be 1:1 mapped to an object.
+This path should be 1:1 mapped to an object. It is worth mentioning here that if
+we want to refer to the same object even if it was deleted and recreated, we can
+add the `If-Match-Checksum` parameter to the URI. E.g *gnfd://mybucket/myobject?If-Match-Checksum=qUiQTy8PR5uPgZdpSzAYSw0u0cHNKh7A+4XSmaGSpEc=*.
 
 #### 23.1.2 HTTPS REST API
 
@@ -1489,8 +1516,8 @@ Each SP will register multiple endpoints to access their services, e.g.
 The most important endpoint is the one for users to download objects. To
 download an object, users can just substitute the "gnfd://" in the URI
 standard with the SP endpoint. For example, to access
-gnfd://mybucket/foo/bar/my-cool-object-id, users can just visit SP1 at
-[https://greenfield/sp1.com/download/mybucket/foo/bar/my-cool-object-id](https://greenfield/sp1.com/download/mybucket/foo/bar/my-cool-object-id).
+gnfd://mybucket/foo/bar.jpg, users can just visit SP1 at
+[https://greenfield.sp1.com/download/mybucket/foo/bar.jpg](https://greenfield.sp1.com/download/mybucket/foo/bar.jpg).
 
 When SP1 receives the request to this path, SP1 should understand the
 users want to download the object at

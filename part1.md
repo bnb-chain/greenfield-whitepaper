@@ -420,13 +420,12 @@ their objects later if they are not satisfied with their service.
 #### 5.2.2 Data Redundancy
 
 After the users issue a "write" request, Primary SP should respond to
-the client upload request to accept the user upload, verify the data
-integrity, and store a full copy of the data object. After that, Primary
-SP will chop the object data into segments, and compute a data
-redundancy solution for these segments based on Erasure Coding (EC).
-Then Primary SP or the users will select a few secondary SPs to store
-these segment replicas and their EC parity pieces. This data
-distribution communication will be done via the p2p network and REST
+the client upload request to accept the user upload, chop the object
+data into segments, verify the data integrity and store all the segments.
+After that, Primary SP computes a data redundancy solution for these segments
+based on Erasure Coding (EC). Then Primary SP or the users will select a
+few secondary SPs to store these segment replicas and their EC parity pieces.
+This data distribution communication will be done via the p2p network and REST
 APIs among SPs.
 
 The data redundancy setup is to ensure that even if the primary SP and a
