@@ -81,7 +81,7 @@ fundamentals are also important to highlight.
 
 The biggest assumption for the design is:
 
-***Greenfield is an economically sustainable, service-oriented
+***Greenfield is a self-sustained, service-oriented
 ecosystem.***
 
 By "self-sustained", it means that the service providers and
