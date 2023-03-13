@@ -328,7 +328,7 @@ Data availability challenge will be covered in the later section.
 
 #### 16.3.4 Remove Storage Provider
 
-Anyone can submit a proposal to remove a storage provider for the
+Anyone can submit a proposal to remove a storage provider if the
 storage provider doesn't provide a good service or prefers to stop
 service. The current active validators can vote on this proposal. Once this
 proposal is passed, the SP will be restricted from accepting new object-storing
@@ -748,9 +748,9 @@ The user-side client software will perform some work:
 
 Besides sending the information to the Greenfield blockchain, the client
 software also sends the same to the primary SP and uploads the payload
-data onto it. For the primary SP stores the original segments of the
-object, the SP has to verify the root hash to check the integrity of the
-segment. The SP also has to compute the EC pieces by itself and verify
+data onto it. To store the original segments of the object,
+the primary SP must first verify the root hash to ensure the integrity of the data.
+The SP also has to compute the EC pieces by itself and verify
 the hash. All the hashes will be recorded on a manifest file stored
 locally with the SP, and the root hash of the file will be submitted to
 the Greenfield blockchain in the "Seal" transaction. Greenfield
@@ -877,8 +877,7 @@ The CreateBucket transaction must have the below information:
 
 - bucket name
 
-- the ID of the SP that the bucket and all objects under this bucket
-  will use as the Primary SP
+- the ID of the SP responsible for saving the bucket and all objects within it that will serve as the primary SP
 
 There is a corresponding DeleteBucket transaction. It requires that all
 the objects under the bucket must be deleted first. As described in the
