@@ -748,8 +748,8 @@ The user-side client software will perform some work:
 
 Besides sending the information to the Greenfield blockchain, the client
 software also sends the same to the primary SP and uploads the payload
-data onto it. To store the original segments of the object, the primary SP must 
-first verify the root hash to ensure the integrity of the data. 
+data onto it. To store the original segments of the object,
+the primary SP must first verify the root hash to ensure the integrity of the data.
 The SP also has to compute the EC pieces by itself and verify
 the hash. All the hashes will be recorded on a manifest file stored
 locally with the SP, and the root hash of the file will be submitted to
