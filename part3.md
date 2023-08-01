@@ -326,19 +326,18 @@ $$ data challenge reserves = (1 - \frac{1}{SP Number + 1}) * Maximum Percent $$
 
 Data availability challenge will be covered in the later section.
 
-#### 16.3.4 Remove Storage Provider
+#### 16.3.4 Storage Provider Exit
 
-Anyone can submit a proposal to remove a storage provider if the
-storage provider doesn't provide a good service or prefers to stop
-service. The current active validators can vote on this proposal. Once this
-proposal is passed, the SP will be restricted from accepting new object-storing
-requests, but still has the obligation to serve query requests. Other
-SPs or the data owners should start requesting to move the data off
-this "to-be-removed" SP. The "to-be-removed" SP has to facilitate the data
-moving so that it can get the full deposit back and avoid further slash.
-Actually, even if it chooses to not cooperate, the data can be recovered from
-the other SPs. After all the data has been migrated, this "to-be-removed" SP
-can withdraw all its deposit, and this SP would be removed.
+Storage providers can freely decide to exit, but SPs must complete a graceful exit to ensure no users are affected,
+otherwise, part of staked BNB from the SP will be slashed. Below are the key workflows about how SP exit:
+
+- The Storage Provider (SP1), initiates the exit process by submitting a `StorageProviderExit` transaction to the blockchain.
+- The SP1 or its successor SP must then repeatedly call `SwapOut` to remove itself from all Virtual Groups.
+- For the primary SP, the swap-out process occurs at the family level to ensure there are no conflicts with other SPs
+  within the Virtual Group.
+- For secondary SPs, the swap-out happens at the Virtual Group level and must also avoid conflicts with the primary SP.
+- Once the SP1 has successfully completed the swap-out process from all Virtual Groups, it can submit a
+  `CompleteStorageProviderExit` transaction to retrieve the staked BNB.
 
 ## 17 Storage MetaData Models
 
