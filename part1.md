@@ -521,7 +521,7 @@ matches the object's metadata by comparing the checksum of the object on
 Greenfield chain and the checksum of the payload data; If it matches the
 primary SP will sign the "uploaded" confirmation to the users;
 
-c. The primary SP choose a Virtual Group and syncs with secondary SPs inside the group to set up the data redundancy,
+c. The primary SP chooses a Virtual Group and syncs with secondary SPs inside the group to set up the data redundancy,
 and then it signs a "Seal" transaction with the finalized metadata for storage.
 If the primary SP determines that it doesn't want to store the file due to
 whatever reason, it can also "SealReject" the request.
