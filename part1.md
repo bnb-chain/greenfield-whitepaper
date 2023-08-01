@@ -419,26 +419,26 @@ their objects later if they are not satisfied with their service.
 
 #### 5.2.2 Virtual Group and Virtual Family
 
-A Virtual Group consists of a primary storage provider and several secondary storage providers. 
-Each object is associated with a virtual group, limiting the range of secondary storage providers for storing object 
-replica data. The number of storage providers in each virtual group is determined by the redundancy policy. 
-E.g If our redundancy policy specifies a full replica and a 4+2 erasure coding (EC) replica tree, so every 
+A Virtual Group consists of a primary storage provider and several secondary storage providers.
+Each object is associated with a virtual group, limiting the range of secondary storage providers for storing object
+replica data. The number of storage providers in each virtual group is determined by the redundancy policy.
+E.g If our redundancy policy specifies a full replica and a 4+2 erasure coding (EC) replica, so every
 virtual group should have one primary sp and six secondary sp.
 
-A Virtual Family consists of several Virtual Groups that share the same primary storage provider. 
-A Virtual Family has limited storage capacity. When the number of Virtual Groups in a Virtual Family reaches its limit, 
+A Virtual Family consists of several Virtual Groups that share the same primary storage provider.
+A Virtual Family has limited storage capacity. When the number of Virtual Groups in a Virtual Family reaches its limit,
 a new Virtual Family needs to be created.
 
 #### 5.2.3 Staking For Storage
 
-Primary SP must stake BNB for the Virtual Group it creates before it can provide storage services. 
-The minimum required staking tokens can be calculated bt the following formula: 
+Primary SP must stake BNB for the Virtual Group it creates before it can provide storage services.
+The minimum required staking tokens can be calculated bt the following formula:
  `storage_staking_price * stored_size.`
 
-Storage providers can choose to pre-stake tokens for future storage if necessary. 
-The excessive staked BNB can be retrieved anytime. 
+Storage providers can choose to pre-stake tokens for future storage if necessary.
+The excessive staked BNB can be retrieved anytime.
 
-If a storage provider force exit, the staking will be slashed as a reward to storage providers who 
+If a storage provider force exit, the staking will be slashed as a reward to storage providers who
 take over the Virtual Group.
 
 #### 5.2.4 Data Redundancy

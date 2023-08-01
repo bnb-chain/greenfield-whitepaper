@@ -330,13 +330,14 @@ Data availability challenge will be covered in the later section.
 
 Storage providers can freely decide to exit, but SPs must complete a graceful exit to ensure no users are affected,
 otherwise, part of staked BNB from the SP will be slashed. Below are the key workflows about how SP exit:
+
 - The Storage Provider (SP1), initiates the exit process by submitting a `StorageProviderExit` transaction to the blockchain.
 - The SP1 or its successor SP must then repeatedly call `SwapOut` to remove itself from all Virtual Groups.
-- For the primary SP, the swap-out process occurs at the family level to ensure there are no conflicts with other SPs 
+- For the primary SP, the swap-out process occurs at the family level to ensure there are no conflicts with other SPs
   within the Virtual Group.
 - For secondary SPs, the swap-out happens at the Virtual Group level and must also avoid conflicts with the primary SP.
-- Once the SP1 has successfully completed the swap-out process from all Virtual Groups, it can submit a 
-  `CompleteStorageProviderExit` transaction to retrieve the staked BNB. 
+- Once the SP1 has successfully completed the swap-out process from all Virtual Groups, it can submit a
+  `CompleteStorageProviderExit` transaction to retrieve the staked BNB.
 
 ## 17 Storage MetaData Models
 
