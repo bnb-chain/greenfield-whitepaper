@@ -417,7 +417,31 @@ software they use must specify the primary SP. Primary SP should be used
 as the only SP to download the data. Users can change the primary SP for
 their objects later if they are not satisfied with their service.
 
-#### 5.2.2 Data Redundancy
+#### 5.2.2 Virtual Group and Virtual Family
+
+A Virtual Group consists of a primary storage provider and several secondary storage providers. 
+Each object is associated with a virtual group, limiting the range of secondary storage providers for storing object 
+replica data. The number of storage providers in each virtual group is determined by the redundancy policy. 
+E.g If our redundancy policy specifies a full replica and a 4+2 erasure coding (EC) replica tree, so every 
+virtual group should have one primary sp and six secondary sp.
+
+A Virtual Family consists of several Virtual Groups that share the same primary storage provider. 
+A Virtual Family has limited storage capacity. When the number of Virtual Groups in a Virtual Family reaches its limit, 
+a new Virtual Family needs to be created.
+
+#### 5.2.3 Staking For Storage
+
+Primary SP must stake BNB for the Virtual Group it creates before it can provide storage services. 
+The minimum required staking tokens can be calculated bt the following formula: 
+ `storage_staking_price * stored_size.`
+
+Storage providers can choose to pre-stake tokens for future storage if necessary. 
+The excessive staked BNB can be retrieved anytime. 
+
+If a storage provider force exit, the staking will be slashed as a reward to storage providers who 
+take over the Virtual Group.
+
+#### 5.2.4 Data Redundancy
 
 After the users issue a "write" request, Primary SP should respond to
 the client upload request to accept the user upload, chop the object
@@ -497,7 +521,7 @@ matches the object's metadata by comparing the checksum of the object on
 Greenfield chain and the checksum of the payload data; If it matches the
 primary SP will sign the "uploaded" confirmation to the users;
 
-c. The primary SP syncs with secondary SPs to set up the data redundancy,
+c. The primary SP choose a Virtual Group and syncs with secondary SPs inside the group to set up the data redundancy,
 and then it signs a "Seal" transaction with the finalized metadata for storage.
 If the primary SP determines that it doesn't want to store the file due to
 whatever reason, it can also "SealReject" the request.
