@@ -15,7 +15,7 @@
     - [16.3.1 Create and Edit Validator](#1631-create-and-edit-validator)
     - [16.3.2 Staking Reward Distribution](#1632-staking-reward-distribution)
     - [16.3.3 Create Storage Provider](#1633-create-storage-provider)
-    - [16.3.4 Remove Storage Provider](#1634-remove-storage-provider)
+    - [16.3.4 Storage Provider Exit](#1634-storage-provider-exit)
 - [17 Storage MetaData Models](#17-storage-metadata-models)
   - [17.1 Bucket](#171-bucket)
   - [17.2 Object](#172-object)
@@ -922,8 +922,9 @@ fee and read package fee:
    get more download quota. Every data package has a fixed price.
 
 As described in Part 1, the fees are paid on Greenfield in the style of
-"Stream" from users to the SPs at a constant rate. The fees are charged
-every second as they are used.
+"Stream", from users to the Virtual Group Families and Virtual Groups  
+(which contain primary storage providers and secondary storage providers)  
+at a constant rate. The fees are charged every second as they are used.
 
 ### 21.1 Concepts and Formulas
 
@@ -1004,7 +1005,7 @@ deposit, several fields will be recorded for this stream account:
 
 *Current Balance = Static Balance + Delta Balance*
 
-*Buffer Balance = - Netflow Rate \* pre-configed ReserveTime if Netflow Rate is negative*
+*Buffer Balance = - Netflow Rate \* pre-configured ReserveTime if Netflow Rate is negative*
 
 <div align="center"><img src="./assets/21.1%20How%20a%20User%20Receives%20Inflow%20and%20Outflow%20of%20Funds.jpg"  height="60%" width="60%"></div>
 <div align="center"><i>Figure 21.1 How a User Receives Inflow and Outflow of Funds</i></div>
@@ -1044,10 +1045,11 @@ type PaymentConfig struct {
 
 ```go
 type StreamPayment struct {
-    CRUDTimestamp uint64
-    NetflowRate   int64
-    StaticBalance uint64
-    BufferBalance uint64 // reserved balance for a period, e.g. 1 day
+    CRUDTimestamp     uint64
+    NetflowRate       int64
+    FrozenNetflowRate int64 // frozen flow rate, for backup stream record when forced settlement
+    StaticBalance     uint64
+    BufferBalance     uint64 // reserved balance for a period, e.g. 1 day
 }
 ```
 
@@ -1055,8 +1057,8 @@ type StreamPayment struct {
 type PaymentKeeperI interface {
     GetStorePrice(replicaNum, size uint64) (uint64, error)
     GetReadPackagePrice(packageType ReadPackageType) (uint64, error)
-    UpdatePaymentFlow(from, to Address, rate int64) error
-    LiquidateAccount(addr Address) error
+    ApplyUserFlow(from, to Address, rate int64) error
+    IsPaymentAccountOwner(addr, owner AccAddress) bool
 }
 ```
 
@@ -1089,8 +1091,9 @@ from the users' address accounts to a system account maintained by the
 Payment Module, although the fund size and other payment parameters will
 be recorded on the users' stream account, i.e. the StreamPayment record,
 in the Payment Module ledger. When the payment is settled, the funds
-will go from the system account to SPs' address accounts according to
-their in-flow calculation.
+will go from the system account to Virtual Group Families' and Virtual Groups'  
+funding address accounts according to their in-flow calculation, which can  
+be withdrawn by the related SPs.
 
 Every time users do the actions below, their StreamPayment record will
 be updated:
@@ -1102,11 +1105,12 @@ be updated:
 - Adjusting the data packages for read/download will
   create/delete/update the associated streams
 
-The stream from the system account to storage providers will be updated
-together when the users do the above actions. The in-flow flow rate of
-SP will be recorded accurately in the payment module as well, such as
-the total size stored(as primary or secondary SP), etc. The total
-inbound flow will be split among the SPs according to the records.
+The stream from the system account to Virtual Group Families and Virtual Groups  
+will be updated together when the users do the above actions. The in-flow flow  
+rate of Virtual Group Family and Virtual Group will be recorded accurately  
+in the payment module as well, such as the total size stored by each Virtual  
+Group in a bucket, etc. The total inbound flow actually stands for the income  
+to the SPs in the Virtual Group Family and Virtual Group.
 
 #### 21.2.3 Forced Settlement
 
@@ -1183,27 +1187,25 @@ storage and data package.
 The relevant data structures and interface are as the following:
 
 ```go
-// PaymentAccountNum mapping
-// key: PaymentAccountNumPrefix | Address
+// PaymentAccountCount mapping
+// key: PaymentAccountCountPrefix | Address
 // value: uint64  // counter
 // use cases:
-// - record the number of payment accounts of a user
+// - record the count of payment accounts of a user
 // - derive new payment account address from user address
 // - PaymentAccountAddress = Hash(OwnerAddress | current_num), increased by 1 when create a new payment account
 
 // key: PaymentAccountPrefix | Address
 type PaymentAccount struct {
-    Owner        Address
-    Withdrawable bool
+    Owner      Address
+    Refundable bool
 }
 
 type PaymentKeeperI interface {
     Deposit(from, to Address, amount uint64) error
     Withdraw(from, to Address, amount uint64) error
     CreatePaymentAccount(addr Address) (paymentAccountAddr Address, err error)
-    ForbidWithdraw(sender, paymentAccount Address) error
-    SetBucketStorePayer(bucket BucketID, sender, payer Address) error
-    SetBucketReadDataPayer(bucket BucketID, sender, payer Address) error
+    DisableRefund(sender, paymentAccount Address) error
 }
 ```
 
@@ -1237,8 +1239,8 @@ If a payment account is out of balance, it will be settled and set a
 flag as out of balance.
 
 The NetflowRate will be set to 0, while the current settings of the
-stream pay will be backed up in another data structure. The download
-speed for all objects under this account will be downgraded.
+stream pay will be backed up. The download speed for all objects under  
+this account will be downgraded.
 
 If someone deposits into a frozen account and the static balance is
 enough for reserved fees, the account will be resumed automatically. The
@@ -1264,28 +1266,20 @@ price on-chain is 258 USD, 70% of the storage fee will be received by
 the primary SP, and the rest are split by secondary SPs.
 
 When an object of 123, 456, 789 bytes(approximately 123 MB) is sealed,
-there will be 7 payment streams updated. The fee rate is `0.03 / 258 *
+there will be 3 payment streams updated. The fee rate is `0.03 / 258 *
 123456789 / (1024*1024*1024) / (30*24*60*60) = 5.158003812501789e-12`
 BNB/second.
 
 Let's set the rate as R.
 
-- User -\> Primary SP flow rate: 0.7 \* R
+- User -\> Virtual Group Family rate: 0.7 \* R
 
-- User -\> Secondary SP 1 flow rate: 0.05 \* R
+- User -\> Virtual Group(which stores the object) rate: 0.3 \* R
 
-- User -\> Secondary SP 2 flow rate: 0.05 \* R
-
-- User -\> Secondary SP 3 flow rate: 0.05 \* R
-
-- User -\> Secondary SP 4 flow rate: 0.05 \* R
-
-- User -\> Secondary SP 5 flow rate: 0.05 \* R
-
-- User -\> Secondary SP 6 flow rate: 0.05 \* R
+- User -\> Validator tax pool rate: 0.01 \* R
 
 The stream records of the payment accounts will be adjusted. If the
-reserved time is 6 months, the user has to reserve `(R * 6 * 30 * 24 * 60 * 60) = 8.021727529202782e-05` BNB in
+reserved time is 6 months, the user has to reserve `(1.01 * R * 6 * 30 * 24 * 60 * 60) = 8.10194480449481e-05` BNB in
 the Buffer Balance. If the balance of the payment account is not enough, either the trigger
 transaction will fail or the account will be marked as "insufficient".
 
